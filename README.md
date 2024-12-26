@@ -23,6 +23,8 @@ Nama: Retsi Andari Rusli - 1303223043
 
 Nama: Muhammad Ghafarel Faikhar Rahman - 1303223049
 
+Nama : Bima Aditya Ramadhan - 1303223173
+
 Komponen Utama
 
 ESP8266: Mikrokontroler untuk mengumpulkan dan mengirim data sensor.
