@@ -5,6 +5,8 @@
 #include <BlynkSimpleEsp8266.h>
 #include <DHT.h>
 #include <WiFiClientSecure.h>
+#include <ArduinoJson.h>
+#include <ESP8266HTTPClient.h>
 
 // Informasi WiFi
 char ssid[] = "Tes";        
@@ -38,6 +40,36 @@ void setup() {
   timer.setInterval(3000L, sendSensorData);
 }
 
+const char* googleScriptURL = "https://script.google.com/macros/s/AKfycbzUHSLM1YtO0-0sFlj9v_h1Xu5R7LwbkPm8yiKOcnWDss6QNaURKFnnKy5PkBDFTmQD/exec"; 
+
+void sendToGoogleSheets(float suhu, float kelembapan, String hujan, String kondisiCahaya) {
+  WiFiClientSecure client;
+  client.setInsecure(); // Abaikan sertifikat SSL
+  
+  HTTPClient https;
+  String jsonPayload = "{\"suhu\":" + String(suhu, 2) + 
+                       ",\"kelembapan\":" + String(kelembapan, 2) + 
+                       ",\"hujan\":\"" + hujan + 
+                       "\",\"cahaya\":\"" + kondisiCahaya + "\"}";
+
+  https.begin(client, googleScriptURL);
+  https.addHeader("Content-Type", "application/json");
+
+  int httpResponseCode = https.POST(jsonPayload);
+
+  Serial.print("HTTP Response code: ");
+  Serial.println(httpResponseCode);
+  Serial.print("Payload: ");
+  Serial.println(jsonPayload);
+
+  if (httpResponseCode == 200) {
+    Serial.println("Data berhasil dikirim.");
+  } else {
+    Serial.println("Gagal mengirim data. Kode respons: " + String(httpResponseCode));
+  }
+  https.end();
+}
+
 void sendSensorData() {
   // Membaca data sensor
   float suhu = dht.readTemperature();
@@ -50,17 +82,22 @@ void sendSensorData() {
     return;
   }
 
-String hujan = (rainValue == HIGH) ? "Tidak Ada Hujan" : "Hujan";
+  String hujan = (rainValue == HIGH) ? "Tidak Ada Hujan" : "Hujan";
 
- String kondisiCahaya;
-if (ldrValue < 500) {
-  kondisiCahaya = "Cerah"; 
-} else if (ldrValue >= 500 && ldrValue <= 700) {
-  kondisiCahaya = "Berawan"; // Nilai menengah, cahaya sedang
-} else {
-  kondisiCahaya = "Gelap"; // Nilai tinggi, cahaya rendah
-}
-
+  String kondisiCahaya;
+  if (ldrValue < 500) {
+    kondisiCahaya = "Cerah"; 
+  } else if (ldrValue >= 500 && ldrValue <= 700) {
+    kondisiCahaya = "Berawan"; // Nilai menengah, cahaya sedang
+  } else {
+    kondisiCahaya = "Gelap"; // Nilai tinggi, cahaya rendah
+  }
+  Serial.println("Data Sensor:");
+  Serial.print("Suhu: "); Serial.println(suhu);
+  Serial.print("Kelembapan: "); Serial.println(kelembapan);
+  Serial.print("Hujan: "); Serial.println(hujan);
+  Serial.print("Cahaya: "); Serial.println(kondisiCahaya);
+  sendToGoogleSheets(suhu, kelembapan, hujan, kondisiCahaya);
 
   // Kirim data ke Blynk
   Blynk.virtualWrite(V0, suhu);         
