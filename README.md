@@ -15,15 +15,15 @@ Notifikasi otomatis untuk kondisi cuaca tertentu.
 
 Anggota Kelompok
 
-Nama: Deril Wijdan FALIH - 1303223047 
+Deril Wijdan FALIH - 1303223047 
 
-Nama: Giovanni Nadika - 1303223169
+Giovanni Nadika - 1303223169
 
-Nama: Retsi Andari Rusli - 1303223043
+Retsi Andari Rusli - 1303223043
 
-Nama: Muhammad Ghafarel Faikhar Rahman - 1303223049
+Muhammad Ghafarel Faikhar Rahman - 1303223049
 
-Nama : Bima Aditya Ramadhan - 1303223173
+Bima Aditya Ramadhan - 1303223173
 
 Komponen Utama
 
