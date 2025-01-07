@@ -12,9 +12,13 @@ Fitur Utama:
 Anggota Kelompok
 
 Deril Wijdan FALIH - 1303223047 
+
 Giovanni Nadika - 1303223169
+
 Retsi Andari Rusli - 1303223043
+
 Muhammad Ghafarel Faikhar Rahman - 1303223049
+
 Bima Aditya Ramadhan - 1303223173
 
 Komponen Utama
